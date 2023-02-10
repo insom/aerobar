@@ -52,15 +52,19 @@ int main() {
             wattHourCapacity += stoi(battery["POWER_SUPPLY_ENERGY_FULL"]) / 1e6;
         }
         percentage = 100 * wattHours / wattHourCapacity;
-        auto now = std::chrono::steady_clock::now();
+
+        double t = (double)time(NULL);
+        t = t + 3600; // BMT, not GMT, for Internet time
+        double beats = (int)((t / 8.64)) % 10000;
 
         cout
             << setprecision(2)
             << watts << "W | "
             << wattHours << "Wh | "
-            << percentage << "% | "
-            << now
+            << percentage << "% | @"
+            << setprecision(5) << beats / 10
             << endl;
+
         std::this_thread::sleep_for(1s);
     }
 }
