@@ -5,6 +5,8 @@
 #include <chrono>
 #include <thread>
 #include <filesystem>
+#include <iomanip>
+#include <ctime>
 
 #define PS_DIR "/sys/class/power_supply/"
 
@@ -50,7 +52,15 @@ int main() {
             wattHourCapacity += stoi(battery["POWER_SUPPLY_ENERGY_FULL"]) / 1e6;
         }
         percentage = 100 * wattHours / wattHourCapacity;
-        cout << watts << endl;
+        auto now = std::chrono::steady_clock::now();
+
+        cout
+            << setprecision(2)
+            << watts << "W | "
+            << wattHours << "Wh | "
+            << percentage << "% | "
+            << now
+            << endl;
         std::this_thread::sleep_for(1s);
     }
 }
