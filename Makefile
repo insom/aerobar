@@ -1,2 +1,2 @@
 aerobar: aerobar.cc
-	c++ -o aerobar aerobar.cc
+	c++ -std=c++17 -o aerobar -lstdc++ aerobar.cc

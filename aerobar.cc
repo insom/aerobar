@@ -7,6 +7,7 @@
 #include <filesystem>
 #include <iomanip>
 #include <ctime>
+#include <math.h>
 
 #define PS_DIR "/sys/class/power_supply/"
 
@@ -56,13 +57,20 @@ int main() {
         double t = (double)time(NULL);
         t = t + 3600; // BMT, not GMT, for Internet time
         double beats = (int)((t / 8.64)) % 10000;
+        int minutes = (wattHours * 60) / watts;
 
         cout
-            << setprecision(2)
+            << setprecision(3)
+            << "%{r} "
             << watts << "W | "
             << wattHours << "Wh | "
+            << floor(minutes / 60) << "h"
+            << setfill('0')
+            << setw(2)
+            << minutes % 60 << "m | "
             << percentage << "% | @"
             << setprecision(5) << beats / 10
+            << " "
             << endl;
 
         std::this_thread::sleep_for(1s);
