@@ -58,7 +58,7 @@ int main() {
         t = t + 3600; // BMT, not GMT, for Internet time
         double beats = (int)((t / 8.64)) % 10000;
         int minutes = (wattHours * 60) / watts;
-        if(minutes < 60) {
+        if(minutes < 60 && minutes > 0) {
             cout
                 << "%{F#f00} LOW POWER %{F#555}|%{A:/home/insom/Bin/zzz:} Sleep %{A} ";
         }
@@ -68,16 +68,21 @@ int main() {
             << "%{r} "
             << watts << "W | "
             << wattHours << "Wh | ";
-        if(minutes < 60) cout << "%{F#f00}";
-        cout
-            << floor(minutes / 60) << "h"
-            << setfill('0')
-            << setw(2)
-            << minutes % 60 << "m";
-        if(minutes < 60) cout << "%{F#555}";
+        if(minutes < 60 && minutes > 0) cout << "%{F#f00}";
+        if(minutes > 0) {
+            cout
+                << floor(minutes / 60) << "h"
+                << setfill('0')
+                << setw(2)
+                << minutes % 60 << "m";
+        } else {
+            cout
+                << "FULL";
+        }
+        if(minutes < 60 && minutes > 0) cout << "%{F#555}";
         cout << " | "
             << percentage << "% | @"
-            << setprecision(5) << beats / 10
+            << beats / 10
             << " "
             << endl;
 
